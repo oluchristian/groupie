@@ -1,4 +1,5 @@
 import 'package:chatapp_firebase/widgets/widgets.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -60,19 +61,81 @@ class _LoginPageState extends State<LoginPage> {
                     setState(() {
                       email = val;
                     });
-                    print(email);
+                  },
+                  validator: (val) {
+                    return RegExp(
+                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                            .hasMatch(val!)
+                        ? null
+                        : "please enter a valid email";
                   },
                 ),
                 const SizedBox(
                   height: 15,
                 ),
                 TextFormField(
+                  obscureText: true,
                   decoration: testInputDecoration.copyWith(
                     labelText: 'Password',
                     prefixIcon: Icon(
                       Icons.lock,
                       color: Theme.of(context).primaryColor,
                     ),
+                  ),
+                  onChanged: (val) {
+                    setState(() {
+                      email = val;
+                    });
+                  },
+                  validator: (val) {
+                    if (val!.length < 6) {
+                      return "password must be at least 6 characters";
+                    } else {
+                      return null;
+                    }
+                  },
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30))),
+                    child: const Text(
+                      'Sign In',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                    ),
+                    onPressed: () {
+                      login();
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text.rich(
+                  TextSpan(
+                    text: "Don't have an account?",
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                          text: "Register here",
+                          style: const TextStyle(
+                              color: Colors.black,
+                              decoration: TextDecoration.underline),
+                          recognizer: TapGestureRecognizer()..onTap = () {}),
+                    ],
                   ),
                 ),
               ],
@@ -82,4 +145,6 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+  login() {}
 }
